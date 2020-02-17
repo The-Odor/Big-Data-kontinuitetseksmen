@@ -3,14 +3,14 @@
 # 2. the current directory contains files mapper.py and reducer.py for mapper and reducer code respectively
 
 #Simplify task change further
-taskNumber = 2h
-taskName   = Name
-sourceFile = Users
+taskNumber=2h
+taskName=Name
+sourceFile=Users
 
 #Simplify task change
-mapperfile  = $taskNumber$taskName.py
-reducerfile = "$taskNumber"Reducer.py
-outfile     = output$taskNumber
+mapperfile=$taskNumber$taskName.py
+reducerfile="$taskNumber"Reducer.py
+outfile=output$taskNumber
 
 #Automatic removal
 hadoop fs -rm -r $outfile
