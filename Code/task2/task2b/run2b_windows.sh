@@ -5,7 +5,7 @@
 #Simplify task change further
 taskNumber=2b
 taskName=Unique
-sourceFile = Users
+sourceFile=Users
 
 #Simplify task change
 mapperfile=$taskNumber$taskName.py
