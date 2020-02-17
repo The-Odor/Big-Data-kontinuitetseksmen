@@ -8,9 +8,9 @@ taskName=PigTop10
 sourceFile=Posts
 
 #Simplify task change
-mapperfile=$taskNumber$taskName.py
-reducerfile="$taskNumber"Reducer.py
-outfile=output$taskNumber
+mapperfile  = $taskNumber$taskName.py
+reducerfile = "$taskNumber"Reducer.py
+outfile     = output$taskNumber
 
 #Automatic removal
 hadoop fs -rm -r $outfile
@@ -31,6 +31,9 @@ hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-2.7.3.jar \
 #Read file and save it locally
 hadoop fs -cat $outfile/*
 hadoop fs -copyToLocal $outfile
+
+#Run Pig-script
+pig 1ePig.pig
 
 #Automatic cleanup
 hadoop fs -rm -r $outfile
