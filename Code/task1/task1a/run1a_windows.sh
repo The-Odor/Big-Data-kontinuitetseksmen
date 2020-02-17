@@ -24,7 +24,7 @@ hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-2.7.3.jar \
 -files $mapperfile,$reducerfile \
 -mapper $mapperfile \
 -reducer $reducerfile \
--input posts.xml \
+-input Posts.xml \
 -output $outfile
 
 #Read file and save it locally
