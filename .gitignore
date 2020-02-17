@@ -1,3 +1,7 @@
 *.xml
 *.log
 *.pyc
+Article_Final/main.pdf
+Article_Final/main.aux
+*.aux
+*.pdf
