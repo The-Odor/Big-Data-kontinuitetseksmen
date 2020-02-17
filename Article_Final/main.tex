@@ -1,0 +1,136 @@
+% Do not modify these
+\documentclass[fleqn,10pt]{wlscirep}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+
+
+
+% -- Insert any custom LaTeX packages here --
+
+% \package{natbib} % <-- Required for the Chicago citation style
+% \package{apacite} % <-- Required for the APA citation style
+% If you decide to use one of the styles above, remember to change the \bibliographystyle{} at the bottom of the document too!
+
+\usepackage{listings} % <-- Required if you want to display program source code in your paper.
+
+
+% -- End of custom LaTeX packages --
+
+
+% Fill in your title
+\title{Assignment Title}
+
+% Do not modify the author tag below, just let it be blank
+\author{}
+
+% Fill in assignment abstract
+\begin{abstract}
+Lorem ipsum dolor sit amet, malorum numquam eum ei. Fierent argumentum persequeris ei vis, an cum adhuc consul mnesarchum. Id mel vidisse platonem intellegebat, ocurreret temporibus nam ei. No cum rebum iisque, ne aeterno deserunt electram eos. Te option euripidis intellegam eam, vix ad tempor labore discere.
+\end{abstract}
+
+
+% Do not modify the following two lines
+\begin{document}
+\include{cover}
+
+
+% Insert data for the hand-in's cover page
+\makecoverpage{
+	master_of 		 = \par{Fill in},  % Use either: Applied Computer Science | Human-Computer Interaction
+	assignment_title = \par{Fill in},  % Title of your assignment
+	course_code    	 = \par{Fill in},  % Course code (ex. MA110)
+	course_name      = \par{Fill in},  % Course name (ex. Systems Development)
+	due_date		 = \par{Fill in},  % Due date
+	student_name     = \par{Fill in},  % Your name (or names, if group – separate names with ; semicolon)
+	student_number   = \par{Fill in},  % Your student ID number (or numbers, if group – separate ID numbers with ; semicolon)
+	group_size		 = 1, % Number of group members (used for the declaration text)
+}
+
+
+% Do not modify the following two lines
+\flushbottom
+\maketitle
+
+
+% --INTRODUCTION--
+\section{Introduction}
+Insert your introduction here.
+
+% --RELATED WORK--
+\section{Related Work}
+Present related work here. 
+You should read \cite{Webster2002-pw} on presenting a literature review.
+Both journal papers and conference papers, such as \cite{Dingsoyr2014-xt}, are great sources.
+
+\subsection{A subsection}
+This is an example of a sub-section.
+
+% --RESEARCH METHOD--
+\section{Research Method}
+Present your research method and/or design here. 
+In \cite{Hevner2010-yw}, the authors discuss design science research.
+
+Sometimes, you need to use code to illustrate your technical implementations.
+Using \texttt{lstlisting} can help you with that:
+
+\begin{lstlisting}[caption=Displaying Hello World in JavaScript]
+console.log("Hello World!");
+\end{lstlisting}
+
+
+You might also want to display a formula, equation, stats, or other types of information requiring a math "mode" in \LaTeX.
+
+% In-line using dollar signs
+$E=mc^2$
+
+% A free-standing formula with caption
+\begin{figure}[h]
+\[ E = m c^2 \]
+\caption{Mass-energy equivalence}
+\end{figure}
+
+% --FINDINGS/RESULTS--
+\section{Findings/Results}
+Present your findings/results! 
+It may be in the form of a table, such as in the case of Table \ref{tab:example}.
+Upload data to Github \cite{Github_undated-kr}.
+
+\begin{table}[ht]
+\centering
+\begin{tabular}{|l|l|l|}
+\hline
+\textbf{Condition} & \textbf{n} & \textbf{p} \\
+\hline
+A & 5 & 0.1 \\
+A & 5 & 0.1 \\
+\hline
+\end{tabular}
+\caption{Table caption}
+\end{table}
+
+% --DISCUSSION--
+\section{Discussion}
+A discussion of your findings, results and previous research goes here, perhaps with a reference to Figure \ref{fig:figure_label}.
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=0.5\linewidth]{images/sample_image.png}
+\caption{Image caption}
+\label{fig:figure_label}
+\end{figure}
+
+% --CONCLUSION--
+\section{Conclusion}
+Briefly conclude your study, and present thoughts on implications and further work.
+
+\begin{itemize}
+	\item One idea on further work;
+	\item A second idea as well;
+\end{itemize}
+
+% --REFERENCES--
+\bibliography{references} % <-- This line will generate the bibliography list automatically
+\bibliographystyle{IEEEtran} % <-- Change this line if you want to use a different citation style
+
+% Do not modify this last lines
+\end{document}
