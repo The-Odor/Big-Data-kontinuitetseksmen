@@ -256,7 +256,7 @@ The reducer receives the mapper outputs and sums them up. \\ \\
 
 \subsection{Top questions}
 \textbf{Assumption}: Write a pig script or MapReduce job to find top 10 title questions, identified by PostTypeID="1", in \textit{Posts.xml} based on the Score attribute. The result should be a list containing the top 10 questions, showing id, question, and score.\\ \\
-\textbf{Implementation}: This mapper job functions similarly to 2c Top miners except it puts out 3 parsed attributes using the "triple"-mode of mapper\_core. The reducer performs the reduction and ordering, finding the 10 highest score values. It does this by inserting every input into a list instead of printing it, using pythons standard function string.sort to order it. It then iterates through the 10 highest values to give an output.\\ \\
+\textbf{Implementation}: This mapper job functions similarly to 2c Top users except it puts out 3 parsed attributes using the "triple"-mode of mapper\_core. The reducer performs the reduction and ordering, finding the 10 highest score values. It does this by inserting every input into a list instead of printing it, using pythons standard function string.sort to order it. It then iterates through the 10 highest values to give an output.\\ \\
 \textbf{Notes/Reflection}: The reducer could potentially be improved by only keeping 10 elements in the list at once, changing them out as higher scores were encountered.
 \lstinputlisting[firstline=1,lastline=10,title=2d\_output]{Code_output/output2d}
 
