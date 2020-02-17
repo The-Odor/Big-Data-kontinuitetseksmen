@@ -48,27 +48,25 @@
 }
 \urlstyle{same}
 
-
 % Fill in your title
 \title{Exploring Science Fiction \& Fantasy Q/A}
 
 % Do not modify the author tag below, just let it be blank
 \author{}
-
+\twocolumn
 % Fill in assignment abstract
 \begin{abstract}
-IN this assigment we parsed a dataset, in the form of XMLs, through a Hadoop- and pig apache. We learned how to write MapReduce jobs and Pig scripts, and how effective it is on our dataset based on XML files from science fiction and Fantasy stack exchange. 
+In this assignment we parsed a dataset, in the form of XMLs, through a Hadoop- and pig apache. We learned how to write MapReduce jobs and Pig scripts, and how effective it is on our dataset based on XML files from science fiction and Fantasy stack exchange. 
 
 \end{abstract}
 
 
 % Do not modify the following two lines
-\begin{document}
-\include{cover}
-
 \lstset{style=mystyle}
 \begin{document}
 \include{cover}
+
+
 
 
 % Insert data for the hand-in's cover page
@@ -76,11 +74,11 @@ IN this assigment we parsed a dataset, in the form of XMLs, through a Hadoop- an
 	master_of 		 = \par{Applied Computer Science},  % Use either: Applied Computer Science | Human-Computer Interaction
 	assignment_title = \par{Exploring Science Fiction and Fantasy},  % Title of your assignment
 	course_code    	 = \par{Fill in},  % Course code (ex. MA110)
-	course_name      = \par{Fill in},  % Course name (ex. Systems Development)
-	due_date		 = \par{Fill in},  % Due date
-	student_name     = \par{Fill in},  % Your name (or names, if group – separate names with ; semicolon)
-	student_number   = \par{Fill in},  % Your student ID number (or numbers, if group – separate ID numbers with ; semicolon)
-	group_size		 = 1, % Number of group members (used for the declaration text)
+	course_name      = \par{Big Data},  % Course name (ex. Systems Development)
+	due_date		 = \par{24. February},  % Due date
+	student_name     = \par{-},  % Your name (or names, if group – separate names with ; semicolon)
+	student_number   = \par{865317, 866354},  % Your student ID number (or numbers, if group – separate ID numbers with ; semicolon)
+	group_size		 = 2, % Number of group members (used for the declaration text)
 }
 
 
@@ -91,83 +89,139 @@ IN this assigment we parsed a dataset, in the form of XMLs, through a Hadoop- an
 
 % --INTRODUCTION--
 \section{Introduction}
+This report is of a structure where each task is independent and separately reported, frequently referring to each other due to their similarity. Each contains our assumptions about what the task is asking for, implementation, and any notes/reflections if necessary, opting to add notes/reflection more than necessary rather than less than necessary.\\
+
+We chose to work together because both of us have python background, choosing python as main programming language. We explored a Science Fiction \& Fantasy Q\&A StackExchange dataset based in XML-files as given from \url{archive.org/download/stackexchange/scifi.stackexchange.com.7z} (accessed 17.02.2020) through Hadoop and Pig.\\
+Hadoop is used to store and process big data, it has enormous processing power potential and has the ability to handle virtually any number of tasks and jobs. Hadoop provides a framework which allow users to write and test distributed systems and does not rely on hardware to provide fault tolerance, making it less apt for our small-scale applications, yet we use it for the experience. Pig is a MapReduce abstraction, working on Hadoop methods, that we use in some tasks due to its efficiency. We have elected to use both pig-scripts and pure MapReduce for very similar tasks (see 2c and 2d) to both show our ability to employ both methods and get experience with the two methods.
+
+\section{Main functions}
+The datasets consists only XML files which, being of a document-oriented database, is structured into attributes attributed to each element of the file. Being oriented towards use in HTML, i.e. a website, the attributes contain ascii characters, punctuation, numbers and HTML tags that we don't want to be there. For this we designed the function cleanBody, meant to clean the text gained from the XML-documents. Additionally a function to parse the XML files was required, for which we created XmlParser. Lastly, we created a general function that would perform the duties of putting out the results of the mapper function; mapper\_core. This section explains their implementations, details the modules imported and describes the bash-script used to run our python-scripts: 
 
 
-% --RELATED WORK--
-\section{Related Work}
-Present related work here. 
-You should read \cite{Webster2002-pw} on presenting a literature review.
-Both journal papers and conference papers, such as \cite{Dingsoyr2014-xt}, are great sources.
+\subsection{cleanBody}
+The cleanBody function formats strings to be parseable by python interpreters. The function removes case sensitivity, ascii characters, HTML formatting, and treats anything separated by blanked space or / as separated words. This simple implementation of text formatting will affect the results of some tasks. For instances the name "Jens-Petter" will be interpreted as the word "jenspetter" and the filepath /documents/folder/file.extension will be interpreted as the words "documents", "folder" and "fileextension". \\
+The function takes a string as input, formats it and outputs a list of all the words split by the string.split(" ") function.
+It uses the sub-function of the open source re module to remove HTML-tags and ascii function that is inherent starting with in python 3 to convert all characters to parse-able ascii text. The symbols in ignore\_char, which are characters we are not considering is defined by the builtin string functions string.punctuation and string.digits.
+\begin{lstlisting}[language=Python, caption=cleanBody function]
+def cleanBody(body):
+    body = body.lower()
+    body = ascii(body)
+    body = sub("<.+?>","",body)
+    body = body.replace("/", " ")
+    body = body.strip()
 
-\subsection{A subsection}
-This is an example of a sub-section.
+    for i in ignore_char:
+        	body = body.replace(i, "")
 
-% --RESEARCH METHOD--
-\section{Research Method}
-Present your research method and/or design here. 
-In \cite{Hevner2010-yw}, the authors discuss design science research.
+    body = body.split(" ")
 
-Sometimes, you need to use code to illustrate your technical implementations.
-Using \texttt{lstlisting} can help you with that:
+    return body
+\end{lstlisting}
+\subsection{Mapper Core}
+mapper\_core is the core of the mapper function; it prints out the relevant data in a format parseable by Hadoop. It functions through three modes, as determined by the parameter mode: "single", "double", and "triple".
 
-\begin{lstlisting}[caption=Displaying Hello World in JavaScript]
-console.log("Hello World!");
+\begin{itemize}
+  \item Single: Assumes input "words" is a list of words to print. Prints word in words as (word, 1). Ignores empty strings and spaces.
+  \item Double: Assumes input "words" is two nested lists to print. Prints word, count in words as (word, count). Ignores empty strings and spaces.
+  \item Triple: Assumes input "words" is three nested lists to print. Prints id, score, title in words as (id, score, title). does not ignore empty strings and spaces.
+\end{itemize}
+
+\begin{lstlisting}[language=Python, caption=mapper\_core function]
+def mapper_core(words, mode="single"):
+    if mode == "single":
+        for word in words:
+            if word not in ["", " "]:
+              print("%s %s" %(word,1)) #Emit the word
+
+    elif mode == "double":
+        in1, in2 = words
+        for word, count in zip(in1,in2):
+            if word not in ["", " "]:
+                print("%s %s" %(word,count)) #emit the words
+
+    elif mode == "triple":
+        in1, in2,in3  = words
+        for id, score, title in zip(in1,in2,in3):
+            print("%s %s %s" %(id,score, title)) #emit the words
+
+\end{lstlisting}
+
+\subsection{xmlparser}
+The xmlparser function parses an xml using the open-source xml.etree.ElementTree. For normal use it uses sys.stdin as input, but for debugging purposes it also contains a clause that lets it accept a string (see the isinstance(infile, str) check) as a path to the location of an XML-file.\\
+Although parsing an entire XML-file takes up significant memory, this method fits our dataset. It has been separated out as a function so it may be easily replaced by other methods more fit for large files. The input for this function is a XML-file and the output is a parsed XML-file.
+
+\begin{lstlisting}[language=Python, caption=xmlparser function]
+def xmlparser(infile):
+    if not isinstance(infile, str):
+        infile = infile.detach()
+    mytree = ET.parse(infile)
+    myroot = mytree.getroot()
+    return myroot
+\end{lstlisting}
+
+\subsection{Import sys}
+The sys module is an open-source, built in python function that allows us to add to the module search path with sys.path.append(\'../\'), enabling finding ProjectFunctions in a parallel folder, and read in the input for our mapper function and reduce function using sys.stdin.
+\begin{lstlisting}[language=Python, caption=Import for sys]
+import sys
+sys.path.append(\'../\') #allows access functions in parallel folder
+import ProjectFunctions.functions as proj
 \end{lstlisting}
 
 
-You might also want to display a formula, equation, stats, or other types of information requiring a math "mode" in \LaTeX.
 
-% In-line using dollar signs
-$E=mc^2$
+\subsection{Import xml.etree.ElementTree}
+ElementTree is a part of the xml open-source library. XML is an inherently hierarchical data format, being document-oriented, and is naturally represented using a tree-like structure. By using the library ElementTree will represent the XML document as a tree, and elements of the tree is represented as single nodes. 
+\begin{lstlisting}[language=Python, caption=Import for ElementTree]
+import xml.etree.ElementTree as ET
+\end{lstlisting}
 
-% A free-standing formula with caption
-\begin{figure}[h]
-\[ E = m c^2 \]
-\caption{Mass-energy equivalence}
-\end{figure}
+\subsection{Import re.sub}
+re.sub is an open-source module we use in cleanBody to remove HTML-tags by removing anything that appears between two chevrons.
+\begin{lstlisting}[language=Python, caption=Import for re.sub]
+from re import sub
+\end{lstlisting}
 
-% --FINDINGS/RESULTS--
-\section{Findings/Results}
-Present your findings/results! 
-It may be in the form of a table, such as in the case of Table \ref{tab:example}.
-Upload data to Github \cite{Github_undated-kr}.
+\subsection{Bash-script}
+As an example of files being run, this bash-script that was used while testing out scripts is provided. It was used on a windows PC, meaning scripts had to be converted to unix code. It automatically names, cleans, and saves outputs locally. In this example task 4 index is being run. Other examples are 2c using task=2c and taskname=TopMiners and xmlsource=users.
+\lstinputlisting[title=bash-script for a windows-based environment]{runscript.sh}
 
-\begin{table}[ht]
-\centering
-\begin{tabular}{|l|l|l|}
-\hline
-\textbf{Condition} & \textbf{n} & \textbf{p} \\
-\hline
-A & 5 & 0.1 \\
-A & 5 & 0.1 \\
-\hline
-\end{tabular}
-\caption{Table caption}
-\end{table}
 
-% --DISCUSSION--
-\section{Discussion}
-A discussion of your findings, results and previous research goes here, perhaps with a reference to Figure \ref{fig:figure_label}.
 
-\begin{figure}[!h]
-\centering
-\includegraphics[width=0.5\linewidth]{images/sample_image.png}
-\caption{Image caption}
-\label{fig:figure_label}
-\end{figure}
 
-% --CONCLUSION--
-\section{Conclusion}
-Briefly conclude your study, and present thoughts on implications and further work.
-
-\begin{itemize}
-	\item One idea on further work;
-	\item A second idea as well;
-\end{itemize}
-
-% --REFERENCES--
-\bibliography{references} % <-- This line will generate the bibliography list automatically
-\bibliographystyle{IEEEtran} % <-- Change this line if you want to use a different citation style
 
 % Do not modify this last lines
 \end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
