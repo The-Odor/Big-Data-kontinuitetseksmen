@@ -12,20 +12,53 @@
 % If you decide to use one of the styles above, remember to change the \bibliographystyle{} at the bottom of the document too!
 
 \usepackage{listings} % <-- Required if you want to display program source code in your paper.
-
-
+\usepackage{xcolor}
+ 
+ 
+\definecolor{codegreen}{rgb}{0,0.6,0}
+\definecolor{codegray}{rgb}{0.5,0.5,0.5}
+\definecolor{codepurple}{rgb}{0.58,0,0.82}
+\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
+ 
 % -- End of custom LaTeX packages --
+\lstdefinestyle{mystyle}{
+    backgroundcolor=\color{backcolour},   
+    commentstyle=\color{codegreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{codegray},
+    stringstyle=\color{codepurple},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2
+    }
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=magenta,      
+    urlcolor=cyan,
+}
+\urlstyle{same}
 
 
 % Fill in your title
-\title{Assignment Title}
+\title{Exploring Science Fiction \& Fantasy Q/A}
 
 % Do not modify the author tag below, just let it be blank
 \author{}
 
 % Fill in assignment abstract
 \begin{abstract}
-Lorem ipsum dolor sit amet, malorum numquam eum ei. Fierent argumentum persequeris ei vis, an cum adhuc consul mnesarchum. Id mel vidisse platonem intellegebat, ocurreret temporibus nam ei. No cum rebum iisque, ne aeterno deserunt electram eos. Te option euripidis intellegam eam, vix ad tempor labore discere.
+IN this assigment we parsed a dataset, in the form of XMLs, through a Hadoop- and pig apache. We learned how to write MapReduce jobs and Pig scripts, and how effective it is on our dataset based on XML files from science fiction and Fantasy stack exchange. 
+
 \end{abstract}
 
 
@@ -33,11 +66,15 @@ Lorem ipsum dolor sit amet, malorum numquam eum ei. Fierent argumentum persequer
 \begin{document}
 \include{cover}
 
+\lstset{style=mystyle}
+\begin{document}
+\include{cover}
+
 
 % Insert data for the hand-in's cover page
 \makecoverpage{
-	master_of 		 = \par{Fill in},  % Use either: Applied Computer Science | Human-Computer Interaction
-	assignment_title = \par{Fill in},  % Title of your assignment
+	master_of 		 = \par{Applied Computer Science},  % Use either: Applied Computer Science | Human-Computer Interaction
+	assignment_title = \par{Exploring Science Fiction and Fantasy},  % Title of your assignment
 	course_code    	 = \par{Fill in},  % Course code (ex. MA110)
 	course_name      = \par{Fill in},  % Course name (ex. Systems Development)
 	due_date		 = \par{Fill in},  % Due date
@@ -54,7 +91,7 @@ Lorem ipsum dolor sit amet, malorum numquam eum ei. Fierent argumentum persequer
 
 % --INTRODUCTION--
 \section{Introduction}
-Insert your introduction here.
+
 
 % --RELATED WORK--
 \section{Related Work}
