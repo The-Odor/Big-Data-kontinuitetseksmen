@@ -5,10 +5,11 @@
 #Simplify task change further
 tasknumb=1a
 taskname=WordCount
+sourceFile=Posts
 
 #Simplify task change
 mapperfile=$tasknumb$taskname.py
-reducerfile="$tasknumb"reducer.py
+reducerfile="$tasknumb"Reducer.py
 outfile=output$tasknumb
 
 #Automatic removal
@@ -19,7 +20,7 @@ apt-get install dos2unix
 dos2unix $mapperfile
 dos2unix $reducerfile
 
-#Main MapReduce function
+#Main MapReduce function call
 hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-2.7.3.jar \
 -files $mapperfile,$reducerfile \
 -mapper $mapperfile \
