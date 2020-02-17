@@ -3,8 +3,8 @@
 # 2. the current directory contains files mapper.py and reducer.py for mapper and reducer code respectively
 
 #Simplify task change further
-taskNumber = 1a
-taskName   = WordCount
+taskNumber = 1f
+taskName   = Tags
 sourceFile = Posts
 
 #Simplify task change

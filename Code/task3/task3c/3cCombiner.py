@@ -3,13 +3,13 @@ import sys
 sys.path.append('../../') #allows access functions in parallel folder
 import ProjectFunctions.functions as proj
 
-cleanBody, mapper_core, parser = proj.cleanBody, proj.mapper_core, proj.xmlparser
+cleanBody, parser = proj.cleanBody, proj.xmlparser
 
 """
 xmlmapper(source, infile=sys.stdin)
-main mapper function, uses cleanBody() and mapper_core()
+main mapper function, uses cleanBody()
 Counts words in xml-files, where the bodies are defined as
-questions (PostTypeId = 1)
+questions (PostTypeId = 1). Uses a combiner
 
 input:
   string source           : xml-tag to extract from
@@ -25,13 +25,32 @@ returns:
 def xmlmapper(source, infile=sys.stdin):
     parsed = parser(infile)
 
+    allwords = {}
+
     # Iterates through each xml-row and extracts data
     for post in parsed:
-        if (post.attrib["PostId"] == "1"):
+        if (post.attrib["PostTypeId"] == "1"):
             body = post.attrib[source]
 
             words = cleanBody(body)
 
-            mapper_core(words)
+            #Combiner
+            for word in words:
+                if word == "":
+                    continue
+                if word in allwords:
+                    allwords[word]+= 1
+                else:
+                    allwords[word] = 1
 
-xmlmapper("Text")
+    #Converts allwords from dict to list
+    wordslist = []
+    for word in allwords:
+        wordslist.append([word, allwords[word]])
+
+    wordslist.sort(key=lambda x: x[-1])
+
+    for word, count in wordslist:
+        print("%s %d "%(word, count))
+
+xmlmapper("Body")

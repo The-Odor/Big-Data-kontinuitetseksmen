@@ -3,13 +3,13 @@ import sys
 sys.path.append('../../') #allows access functions in parallel folder
 import ProjectFunctions.functions as proj
 
-cleanBody, mapper_core, parser = proj.cleanBody, proj.mapper_core, proj.xmlparser
+cleanBody, parser = proj.cleanBody, proj.xmlparser
 
 """
-xmlmapper(source, infile=sys.stdin)
+xmlmapper(infile)
 main mapper function, uses cleanBody() and mapper_core()
-Counts words in xml-files, where the bodies are defined as
-questions (PostTypeId = 1)
+Lists all unique users in an xml databse by unique Id
+and displayname
 
 input:
   string source           : xml-tag to extract from
@@ -26,12 +26,12 @@ def xmlmapper(source, infile=sys.stdin):
     parsed = parser(infile)
 
     # Iterates through each xml-row and extracts data
-    for post in parsed:
-        if (post.attrib["PostId"] == "1"):
-            body = post.attrib[source]
+    for user in parsed:
 
-            words = cleanBody(body)
+        userID   = user.attrib[source]
+        userName = user.attrib["DisplayName"]
 
-            mapper_core(words)
+        userName = " ".join(cleanBody(userName))
 
-xmlmapper("Text")
+        print(userID + "|" + userName)
+xmlmapper("Id")

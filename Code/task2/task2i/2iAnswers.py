@@ -8,8 +8,7 @@ cleanBody, mapper_core, parser = proj.cleanBody, proj.mapper_core, proj.xmlparse
 """
 xmlmapper(source, infile=sys.stdin)
 main mapper function, uses cleanBody() and mapper_core()
-Counts words in xml-files, where the bodies are defined as
-questions (PostTypeId = 1)
+Outputs the number of questions that have at least 1 answer
 
 input:
   string source           : xml-tag to extract from
@@ -25,13 +24,15 @@ returns:
 def xmlmapper(source, infile=sys.stdin):
     parsed = parser(infile)
 
+    count = 0
+
     # Iterates through each xml-row and extracts data
     for post in parsed:
-        if (post.attrib["PostId"] == "1"):
-            body = post.attrib[source]
+        if (post.attrib["PostTypeId"] == "1" and\
+                int(post.attrib["AnswerCount"]) > 0):
 
-            words = cleanBody(body)
+            count += 1
 
-            mapper_core(words)
+    print("Answers %d"%(count))
 
-xmlmapper("Text")
+xmlmapper("AnswerCount")

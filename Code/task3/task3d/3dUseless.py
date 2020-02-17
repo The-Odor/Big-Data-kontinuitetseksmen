@@ -8,8 +8,7 @@ cleanBody, mapper_core, parser = proj.cleanBody, proj.mapper_core, proj.xmlparse
 """
 xmlmapper(source, infile=sys.stdin)
 main mapper function, uses cleanBody() and mapper_core()
-Counts words in xml-files, where the bodies are defined as
-questions (PostTypeId = 1)
+Counts the amount of times the word useless is used
 
 input:
   string source           : xml-tag to extract from
@@ -25,13 +24,18 @@ returns:
 def xmlmapper(source, infile=sys.stdin):
     parsed = parser(infile)
 
-    # Iterates through each xml-row and extracts data
+    count = 0
+
+    #Extracting the relevant section from the file
     for post in parsed:
-        if (post.attrib["PostId"] == "1"):
+        if (post.attrib["PostTypeId"] == "1"):
             body = post.attrib[source]
 
             words = cleanBody(body)
 
-            mapper_core(words)
+            if("useless" in words):
+                count +=1
+                
+    print(count)
 
-xmlmapper("Text")
+xmlmapper("Body")

@@ -6,10 +6,10 @@ import ProjectFunctions.functions as proj
 cleanBody, mapper_core, parser = proj.cleanBody, proj.mapper_core, proj.xmlparser
 
 """
-xmlmapper(source, infile=sys.stdin)
+xmlmapper(infile)
 main mapper function, uses cleanBody() and mapper_core()
-Counts words in xml-files, where the bodies are defined as
-questions (PostTypeId = 1)
+Combined with 1ePig.pig, lists top 10 words (not counting
+stopwords) found in titles
 
 input:
   string source           : xml-tag to extract from
@@ -22,16 +22,29 @@ input:
 returns:
   None, prints words into format acceptable by Hadoop
 """
+
 def xmlmapper(source, infile=sys.stdin):
     parsed = parser(infile)
 
     # Iterates through each xml-row and extracts data
-    for post in parsed:
-        if (post.attrib["PostId"] == "1"):
-            body = post.attrib[source]
+    for titles in parsed:
+        if (titles.attrib["PostTypeId"] == "1"):
+            title = titles.attrib[source]
 
-            words = cleanBody(body)
+            words = cleanBody(title)
+
+            for Stop in StopW:
+                if Stop in words:
+                    words.remove(Stop)
 
             mapper_core(words)
 
-xmlmapper("Text")
+
+# Extracts stopwords to a useable format
+with open("StopWords.txt","r") as StopWords:
+    StopW = StopWords.readlines()
+    StopW = [i[:-1] for i in StopW[:-1]] + [StopW[-1]]
+    for i in range(len(StopW)):
+        StopW[i] = StopW[i].replace("'","")
+
+xmlmapper("Title")

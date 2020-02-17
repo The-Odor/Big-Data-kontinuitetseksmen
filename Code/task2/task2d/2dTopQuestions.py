@@ -6,10 +6,9 @@ import ProjectFunctions.functions as proj
 cleanBody, mapper_core, parser = proj.cleanBody, proj.mapper_core, proj.xmlparser
 
 """
-xmlmapper(source, infile=sys.stdin)
+xmlmapper(infile)
 main mapper function, uses cleanBody() and mapper_core()
-Counts words in xml-files, where the bodies are defined as
-questions (PostTypeId = 1)
+Outputs top 10 questions in terms of their Score
 
 input:
   string source           : xml-tag to extract from
@@ -26,12 +25,14 @@ def xmlmapper(source, infile=sys.stdin):
     parsed = parser(infile)
 
     # Iterates through each xml-row and extracts data
-    for post in parsed:
-        if (post.attrib["PostId"] == "1"):
-            body = post.attrib[source]
+    for question in parsed:
+        if (question.attrib["PostTypeId"] == "1"):
+            id = question.attrib[source]
+            title = question.attrib["Title"]
+            score = question.attrib["Score"]
 
-            words = cleanBody(body)
+            words = cleanBody(title)
+            Title = " ".join(words)
+            mapper_core([[id],[score], [Title]], "triple")
 
-            mapper_core(words)
-
-xmlmapper("Text")
+xmlmapper("Id")

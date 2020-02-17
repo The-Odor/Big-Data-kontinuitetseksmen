@@ -7,9 +7,7 @@ cleanBody, mapper_core, parser = proj.cleanBody, proj.mapper_core, proj.xmlparse
 
 """
 xmlmapper(source, infile=sys.stdin)
-main mapper function, uses cleanBody() and mapper_core()
-Counts words in xml-files, where the bodies are defined as
-questions (PostTypeId = 1)
+creates a dictionary over unique tags in an xml-file
 
 input:
   string source           : xml-tag to extract from
@@ -25,13 +23,18 @@ returns:
 def xmlmapper(source, infile=sys.stdin):
     parsed = parser(infile)
 
+    tag = None
     # Iterates through each xml-row and extracts data
-    for post in parsed:
-        if (post.attrib["PostId"] == "1"):
-            body = post.attrib[source]
+    for tags in parsed:
+        try:
+            tag = tags.attrib[source]  
+        except KeyError:
+            continue
 
-            words = cleanBody(body)
+        tag = tag.replace(">", " ")
+        tag = tag.replace("<", "")
+        words = cleanBody(tag)
 
-            mapper_core(words)
+        mapper_core(words)
 
-xmlmapper("Text")
+xmlmapper("Tags")

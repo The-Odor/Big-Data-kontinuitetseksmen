@@ -7,9 +7,8 @@ cleanBody, mapper_core, parser = proj.cleanBody, proj.mapper_core, proj.xmlparse
 
 """
 xmlmapper(source, infile=sys.stdin)
-main mapper function, uses cleanBody() and mapper_core()
-Counts words in xml-files, where the bodies are defined as
-questions (PostTypeId = 1)
+main mapper function, uses cleanBody()
+Outputs the average amount of answers per question
 
 input:
   string source           : xml-tag to extract from
@@ -25,13 +24,15 @@ returns:
 def xmlmapper(source, infile=sys.stdin):
     parsed = parser(infile)
 
+    total = 0
+    count = 0
     # Iterates through each xml-row and extracts data
     for post in parsed:
-        if (post.attrib["PostId"] == "1"):
-            body = post.attrib[source]
+        if (post.attrib["PostTypeId"] == "1"):
+            total += int(post.attrib[source])
+            count += 1
 
-            words = cleanBody(body)
+    average = total/count
+    print(average)
 
-            mapper_core(words)
-
-xmlmapper("Text")
+xmlmapper("AnswerCount")

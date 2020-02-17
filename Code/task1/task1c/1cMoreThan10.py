@@ -1,15 +1,15 @@
 #!/usr/bin/python3
 import sys
-sys.path.append('../') #allows access functions in parallel folder
+sys.path.append('../../') #allows access functions in parallel folder
 import ProjectFunctions.functions as proj
 
 cleanBody, mapper_core, parser = proj.cleanBody, proj.mapper_core, proj.xmlparser
 
 """
-xmlmapper(source, infile=sys.stdin)
-main mapper function, uses cleanBody() and mapper_core()
-Lists unique words in xml-files, where the bodies are 
-defined as questions (PostTypeId = 1)
+xmlmapper(infile)
+main mapper function, uses cleanBody()
+Outputs an integer of how many questions (PostTypeId = 1)
+have 10 or more words in their titles (including stopwords)
 
 input:
   string source           : xml-tag to extract from
@@ -25,13 +25,18 @@ returns:
 def xmlmapper(source, infile=sys.stdin):
     parsed = parser(infile)
 
+    count = 0
+
     # Iterates through each xml-row and extracts data
     for titles in parsed:
-        if (titles.attrib["PostTypeId"] == "1"):
+        if titles.attrib["PostTypeId"] == "1":
             title = titles.attrib[source]
 
             words = cleanBody(title)
-            mapper_core(words)
+
+            if len(words) >10 :
+                count += 1
+    
+    print (count)
 
 xmlmapper("Title")
-

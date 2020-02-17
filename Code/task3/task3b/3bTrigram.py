@@ -7,9 +7,9 @@ cleanBody, mapper_core, parser = proj.cleanBody, proj.mapper_core, proj.xmlparse
 
 """
 xmlmapper(source, infile=sys.stdin)
-main mapper function, uses cleanBody() and mapper_core()
-Counts words in xml-files, where the bodies are defined as
-questions (PostTypeId = 1)
+main mapper function, uses cleanBody()
+Counts trigrams (list of tree words) in xml-files, 
+where the bodies are defined as questions (PostTypeId = 1)
 
 input:
   string source           : xml-tag to extract from
@@ -27,11 +27,13 @@ def xmlmapper(source, infile=sys.stdin):
 
     # Iterates through each xml-row and extracts data
     for post in parsed:
-        if (post.attrib["PostId"] == "1"):
+        if (post.attrib["PostTypeId"] == "1"):
             body = post.attrib[source]
 
             words = cleanBody(body)
 
-            mapper_core(words)
+            for i in range(len(words)-2):
+                print("{} {} {} | 1"\
+                .format(words[i], words[i+1], words[i+2]))
 
-xmlmapper("Text")
+xmlmapper("Title")
