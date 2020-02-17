@@ -3,9 +3,9 @@
 # 2. the current directory contains files mapper.py and reducer.py for mapper and reducer code respectively
 
 #Simplify task change further
-taskNumber = 1b
-taskName   = Unique
-sourceFile = Posts
+taskNumber=1b
+taskName=Unique
+sourceFile=Posts
 
 #Simplify task change
 mapperfile  = $taskNumber$taskName.py

@@ -3,20 +3,20 @@
 # 2. the current directory contains files mapper.py and reducer.py for mapper and reducer code respectively
 
 #Simplify task change further
-taskNumber = 1a
-taskName   = WordCount
-sourceFile = Posts
+taskNumber=1a
+taskName=WordCount
+sourceFile=Posts
 
 #Simplify task change
-mapperfile  = $taskNumber$taskName.py
-reducerfile = "$taskNumber"Reducer.py
-outfile     = output$taskNumber
+mapperfile=$taskNumber$taskName.py
+reducerfile="$taskNumber"Reducer.py
+outfile=output$taskNumber
 
 #Automatic removal
 hadoop fs -rm -r $outfile
 
 #For Windows-compatibility
-apt-get install dos2unix
+apt-get install dos2unix#
 dos2unix $mapperfile
 dos2unix $reducerfile
 
