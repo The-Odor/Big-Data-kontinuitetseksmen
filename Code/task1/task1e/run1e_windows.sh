@@ -33,8 +33,8 @@ hadoop fs -cat $outfile/*
 hadoop fs -copyToLocal $outfile
 
 #Run Pig-script
-pig 1ePig.pig
-hadoop fs -copyToLocal 1ePig_Output output1e
+pig "$taskNumber"Pig.pig
+hadoop fs -copyToLocal "$taskNumber"Pig_Output output$taskNumber
 
 #Automatic cleanup
 hadoop fs -rm -r $outfile

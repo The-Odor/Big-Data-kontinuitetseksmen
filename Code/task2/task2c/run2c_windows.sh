@@ -32,5 +32,9 @@ hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-2.7.3.jar \
 hadoop fs -cat $outfile/*
 hadoop fs -copyToLocal $outfile
 
+#Run Pig-script
+pig "$taskNumber"Pig.pig
+hadoop fs -copyToLocal "$taskNumber"Pig_Output output2c
+
 #Automatic cleanup
 hadoop fs -rm -r $outfile
