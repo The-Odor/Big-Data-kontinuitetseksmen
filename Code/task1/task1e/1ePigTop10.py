@@ -41,7 +41,7 @@ def xmlmapper(source, infile=sys.stdin):
 
 
 # Extracts stopwords to a useable format
-with open("StopWords.txt","r") as StopWords:
+with open("../../StopWords.txt","r") as StopWords:
     StopW = StopWords.readlines()
     StopW = [i[:-1] for i in StopW[:-1]] + [StopW[-1]]
     for i in range(len(StopW)):
