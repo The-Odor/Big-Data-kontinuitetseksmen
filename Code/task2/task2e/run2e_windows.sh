@@ -4,7 +4,7 @@
 
 #Simplify task change further
 taskNumber=2e
-taskName=FacoriteQuestion
+taskName=FavoriteQuestion
 sourceFile=Posts
 
 #Simplify task change
