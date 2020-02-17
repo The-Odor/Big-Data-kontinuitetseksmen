@@ -8,9 +8,9 @@ taskName=PigTop10
 sourceFile=Posts
 
 #Simplify task change
-mapperfile  = $taskNumber$taskName.py
-reducerfile = "$taskNumber"Reducer.py
-outfile     = output$taskNumber
+mapperfile=$taskNumber$taskName.py
+reducerfile="$taskNumber"Reducer.py
+outfile=output$taskNumber
 
 #Automatic removal
 hadoop fs -rm -r $outfile
@@ -34,6 +34,7 @@ hadoop fs -copyToLocal $outfile
 
 #Run Pig-script
 pig 1ePig.pig
+hadoop fs -copyToLocal 1ePig_Output output1e
 
 #Automatic cleanup
 hadoop fs -rm -r $outfile
