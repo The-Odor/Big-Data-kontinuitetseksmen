@@ -19,7 +19,7 @@ hadoop fs -rm -r $outfile
 apt-get install dos2unix#
 dos2unix $mapperfile
 dos2unix $reducerfile
-
+2
 #Main MapReduce function call
 hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-2.7.3.jar \
 -files $mapperfile,$reducerfile \

@@ -27,11 +27,11 @@ def xmlmapper(source, infile=sys.stdin):
 
     # Iterates through each xml-row and extracts data
     for post in parsed:
-        if (post.attrib["PostId"] == "1"):
+        if (post.attrib["PostTypeId"] == "1"):
             body = post.attrib[source]
 
             words = cleanBody(body)
 
             mapper_core(words)
 
-xmlmapper("Text")
+xmlmapper("Body")
