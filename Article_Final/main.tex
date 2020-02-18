@@ -60,7 +60,7 @@
 \twocolumn
 % Fill in assignment abstract
 \begin{abstract}
-In this assignment, we parsed through datasets, in the form of XMLs, through a Hadoop- and pig apache. We learned how to write MapReduce jobs and Pig scripts, and how effective it is on our dataset based on XML files from Science Fiction and Fantasy Q/A stack exchange. 
+In this assignment, we parsed through XML-based datasets using a Hadoop- and Pig Apache. We learned how to write MapReduce jobs and Pig scripts, and how effective it is on our dataset based on XML files from Science Fiction and Fantasy Q/A stack exchange. 
 
 \end{abstract}
 
@@ -75,14 +75,14 @@ In this assignment, we parsed through datasets, in the form of XMLs, through a H
 
 % Insert data for the hand-in's cover page
 \makecoverpage{
-	master_of 		 = \par{Applied Computer Science}, % Use either: Applied Computer Science | Human-Computer Interaction
+	master_of 	  	 = \par{Applied Computer Science}, % Use either: Applied Computer Science | Human-Computer Interaction
 	assignment_title = \par{Exploring Science Fiction and Fantasy}, % Title of your assignment
-	course_code   	 = \par{Fill in}, % Course code (ex. MA110)
-	course_name   = \par{Big Data}, % Course name (ex. Systems Development)
-	due_date		 = \par{24. February}, % Due date
-	student_name   = \par{-}, % Your name (or names, if group – separate names with ; semicolon)
-	student_number  = \par{865317, 866354}, % Your student ID number (or numbers, if group – separate ID numbers with ; semicolon)
-	group_size		 = 2, % Number of group members (used for the declaration text)
+	course_code   	 = \par{MA140}, % Course code (ex. MA110)
+	course_name      = \par{Big Data}, % Course name (ex. Systems Development)
+	due_date	    	 = \par{24th Feb 2020}, % Due date
+	student_name     = \par{-}, % Your name (or names, if group – separate names with ; semicolon)
+	student_number   = \par{865317, 866354}, % Your student ID number (or numbers, if group – separate ID numbers with ; semicolon)
+	group_size		   = 2, % Number of group members (used for the declaration text)
 }
 
 
@@ -93,14 +93,14 @@ In this assignment, we parsed through datasets, in the form of XMLs, through a H
 
 % --INTRODUCTION--
 \section{Introduction}
-This report is of a structure where each task is independent and separately reported, frequently referring to each other due to their similarity. Each contains our assumptions about what the task is asking for, implementation, and any notes/reflections if necessary, opting to add notes/reflection more than necessary rather than less than necessary.
+This report is of a structure where each task is independent and separately reported, frequently referring to each other due to their similarity. Each contains our assumptions about what the task is asking for, implementation, and any notes/reflections if necessary, opting to add notes/reflection more than necessary rather than less.
 
-We chose to work together because both of us have python background, choosing python as the main programming language. We explored a Science Fiction \& Fantasy Q\&A StackExchange dataset based in XML-files as given from \url{archive.org/download/stackexchange/scifi.stackexchange.com.7z} (accessed 17.02.2020) through Hadoop and Pig. 
+We chose to work together because we both have python background, choosing python as the main programming language. We explored a Science Fiction \& Fantasy Q\&A StackExchange dataset based in XML-files as given from \url{archive.org/download/stackexchange/scifi.stackexchange.com.7z} (accessed 17.02.2020) through Hadoop and Pig. 
 
-Hadoop is used to store and process big data, it has enormous processing power potential and has the ability to handle virtually any number of tasks and jobs. Hadoop provides a framework that allows users to write and test distributed systems and does not rely on hardware to provide fault tolerance, making it less apt for our small-scale applications, yet we use it for the experience. Pig is a MapReduce abstraction, working on Hadoop methods, that we use in some tasks due to its efficiency. We have elected to use both pig-scripts and pure MapReduce for very similar tasks (see 2c and 2d) to both shows our ability to employ both methods and get experience with the two methods.
+Hadoop is used to store and process big amounts of data (Bit Data), it has enormous processing power potential and has the ability to handle virtually any number of tasks and jobs. Hadoop provides a framework that allows users to write and test distributed systems and does not rely on hardware to provide fault tolerance, making it less apt for our small-scale applications, yet we use it for the experience. Pig is a MapReduce abstraction, working on Hadoop methods, that we use in some tasks due to its efficiency. We have elected to use both Pig-scripts and pure MapReduce for very similar tasks (see 2c and 2d) to both show our ability to employ both methods and get experience with the two methods.
 
 \section{Main functions}
-The datasets consist only XML files which, being of a document-oriented database, is structured into attributes attributed to each element of the file. Being oriented towards use in HTML, i.e. a website, the attributes contain ASCII characters, punctuation, numbers and HTML tags that we don't want to be there. For this, we designed the function cleanBody, meant to clean the text gained from the XML-documents. Additionally, a function to parse the XML files was required, for which we created xmlparser. Lastly, we created a general function that would perform the duties of putting out the results of the mapper function; mapper\_core. This section explains their implementations, details the modules imported and describes the bash-script used to run our python-scripts: 
+The datasets consist only XML files which, being of a document-oriented database, is structured into attributes attributed to each element of the file. Being oriented towards use in HTML, i.e. a website, the attributes contain ASCII characters, punctuation, numbers and HTML tags that we don't want to be there. For this, we designed the function cleanBody, meant to clean the text extracted from the XML-documents. Additionally, a function to parse the XML files was required, for which we created xmlparser. Lastly, we created a general function that would perform the duties of putting out the results of the mapper function; mapper\_core. This section explains their implementations, details the modules imported and describes the bash-script used to run our python-scripts: 
 \subsection{\emph{cleanBody}}
 The cleanBody function formats strings to be parseable by python interpreters. The function removes case sensitivity, ASCII characters, HTML formatting, and treats anything separated by blanked space or / as separated words. This simple implementation of text formatting will affect the results of some tasks. For instance, the name "Jens-Petter" will be interpreted as the word "jenspetter" and the file path /documents/folder/file.extension will be interpreted as the words "documents", "folder" and "fileextension".
 The function takes a string as input, formats it and outputs a list of all the words split by the string.split(" ") function.
@@ -125,8 +125,8 @@ mapper\_core is the core of the mapper function; it prints out the relevant data
 
 \begin{itemize}
  \item Single: Assumes input "words" is a list of words to print. Prints word in words as (word, 1). Ignores empty strings and spaces.
- \item Double: Assumes input "words" are two nested lists to print. Prints word, count in words as (word, count). Ignores empty strings and spaces.
- \item Triple: Assumes input "words" is three nested lists to print. Prints id, score, title in words as (id, score, title). does not ignore empty strings and spaces.
+ \item Double: Assumes input "words" is comprised of two nested lists to print. Prints word, count in words as (word, count). Ignores empty strings and spaces.
+ \item Triple: Assumes input "words" is comprised of three nested lists to print. Prints id, score, title in words as (id, score, title). does not ignore empty strings and spaces.
 \end{itemize}
 
 \begin{lstlisting}[language=Python, caption=mapper\_core function]
@@ -143,15 +143,15 @@ def mapper_core(words, mode="single"):
         print("%s %s" %(word,count)) #emit the words
 
   elif mode == "triple":
-    in1, in2,in3 = words
+    in1, in2, in3 = words
     for id, score, title in zip(in1,in2,in3):
       print("%s %s %s" %(id,score, title)) #emit the words
 
 \end{lstlisting}
 
 \subsection{\emph{XML Parser}}
-The XML Parser function parses an XML using the open-source xml.etree.ElementTree. For normal use, it uses sys.stdin as input, but for debugging purposes it also contains a clause that lets it accept a string (see the isinstance(infile, str) check) as a path to the location of an XML-file.\\
-Although parsing an entire XML-file takes up significant memory, this method fits our dataset. It has been separated out as a function so it may be easily replaced by other methods more fit for large files. The input for this function is an XML-file and the output is a parsed XML-file.
+The XML Parser function parses an XML using the open-source xml.etree.ElementTree. It uses sys.stdin as input for normal, Hadoop-based use, but for debugging purposes it also contains a clause that lets it accept a string (see the isinstance(infile, str) check) as a path to the location of an XML-file.\\
+Parsing an entire XML-file takes up a significant amount of memory, so we separated it out as an imported function. This makes it simple to exchange it with another method that could more easily deal with larger files. 
 
 \begin{lstlisting}[language=Python, caption=xmlparser function]
 def xmlparser(infile):
@@ -198,7 +198,7 @@ We use the environment Docker, to act as a data cluster. Files that are bigger t
 \textbf{Assumption}: Count the words in body of questions, identified by PostTypeID="1", in \textit{Posts.xml}. The result should be a list of each word and how many times it occurs in the bodies of questions. \\ \\
 \textbf{Implementation}: The mapper uses the xmlparser function to parse an XML-file, iterates through all rows in the parsed file, cleans text using the cleanBody function and prints output for the reducer script by using the mapper\_core function.
 The reducer receives the mapper output, parses it and iterates through the parsed lines. A counter variable is used to track repeated words, outputting the word with the counter when the word stops repeating. \\ \\
-\textbf{Notes/Reflection}: Here the choices made building the cleanBody function affects the output, interpreting some things like words that are not. See line 2 in 1a\_output for example; what is possibly an "accordingly" followed by three line skips and then an "in" is interpreted as "accordinglynnnin" and is counted as a word. \\
+\textbf{Notes/Reflection}: Here the choices made building the cleanBody function affects the output, interpreting some things as words that are not. See line 2 in 1a\_output for example; what is possibly an "accordingly" followed by three line skips and then an "in" is interpreted as "accordinglynnnin" and is counted as a word. \\
 
 \lstinputlisting[firstline=500, lastline=510, title=1a\_output]{Code_output/output1a.txt}
 
@@ -253,7 +253,7 @@ The reducer receives the mapper outputs and sums them up. \\ \\
 
 \subsection{\emph{Top users}}
 \textbf{Assumption}: Write a pig script or MapReduce job to find the top 10 users based on the Reputation attribute in \textit{Users.xml}. The result should be a list of the 10 users based on the highest reputation value. \\ \\
-\textbf{Implementation}: This mapper job is based on 2b Unique users, except instead of putting out name and id, it puts out a name and the reputation attribute. Here, reputation is given to mapper\_core as a one-element list (mapper\_core called with arguments (name, [reputation])) due to its looping through its inputs. The reducer is the same as the reducer of 2b Unique users. The pig script functions the same way as in 1e Pig Top 10\\ \\
+\textbf{Implementation}: This mapper job is based on 2b Unique users, except instead of putting out a name and its corresponding id, it puts out a name and its corresponding reputation attribute. Here, reputation is given to mapper\_core as a one-element list (mapper\_core called with arguments (name, [reputation])) due to its looping through its inputs. The reducer is the same as the reducer of 2b Unique users. The pig script functions the same way as in 1e Pig Top 10\\ \\
 \textbf{Notes/Reflection}: We elected here to use Pig-script to order the MapReduce output to get experience.
 \lstinputlisting[firstline=1,lastline=10,title=2c\_output]{Code_output/output2c.txt}
 
@@ -338,7 +338,7 @@ The reducer receives the mapper outputs and sums them up. \\ \\
 
 
 \section{Conclusion}
-Through this assignment, we gained experience in using MapReduce jobs and pig scripts. We parsed XML-documents and extracted specific information we were looking for to be formatted to output to each task.
+Through this assignment, we gained experience in using MapReduce jobs and pig scripts. We parsed XML-documents and extracted specific information we were looking for to be formatted to an output for each task.
 
 
 

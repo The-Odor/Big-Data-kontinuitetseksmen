@@ -9,3 +9,7 @@ Article_Final/main.aux
 *.aux
 *.pdf
 Article_Final/main.pdf
+*.gz
+*.pdf
+*.bak
+Article_Final/main.synctex.gz
