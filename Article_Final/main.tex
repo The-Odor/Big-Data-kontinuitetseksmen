@@ -163,10 +163,10 @@ def xmlparser(infile):
 \end{lstlisting}
 
 \subsection{\emph{Import sys}}
-The sys module is an open-source, built in python function that allows us to add to the module search path with sys.path.append(\'../\'), enabling finding ProjectFunctions in a parallel folder, and read in the input for our mapper function and reduce function using sys.stdin.
+The sys module is an open-source, built in python function that allows us to add to the module search path with sys.path.append('../../'), enabling finding ProjectFunctions in a parallel folder, and read in the input for our mapper function and reduce function using sys.stdin.
 \begin{lstlisting}[language=Python, caption=Import for sys]
 import sys
-sys.path.append(\'../\') #allows access functions in parallel folder
+sys.path.append('../../') #allows access functions in parallel folder
 import ProjectFunctions.functions as proj
 \end{lstlisting}
 
@@ -189,7 +189,7 @@ As an example of files being run, this bash-script that was used while testing o
 \lstinputlisting[title=Bash-script for a windows-based environment]{Code_output/runBasis_windows.sh}
 
 \subsection{\emph{Data trimming}}
-We use the environment Docker, to act as a data cluster. Files that are bigger than 128MB are not readable by the module we use to parse XMLs within the Docker environment (whether this is due to this being the standard size of a data block we were not able to tell). Between the choice of running our software outside Docker and trimming the files for data, we elected to trim the relevant file for this case: Posts.xml. We deleted lines 74 699 through 171 247 and used the remaining data as a basis for our analysis.
+We use the environment Docker as a virtual data cluster. Files that are bigger than 128MB are not readable by the module we use to parse XMLs within the Docker environment (whether this is due to this being the standard size of a data block we were not able to tell). Between the choice of running our software outside Docker and trimming the files for data, we elected to trim the relevant file for this case: Posts.xml. We deleted lines 74 699 through 171 247 and used the remaining data as a basis for our analysis.
 
 % --TASK1--
 \section{Task 1 \emph{Warmup}}
@@ -205,7 +205,7 @@ The reducer receives the mapper output, parses it and iterates through the parse
 \subsection{\emph{Unique words}}
 \textbf{Assumption}: Write a MapReduce job which outputs unique words in the titles of questions, identified by PostTypeID="1", in \textit{Posts.xml}. The result should be a list of each word as it appears in the titles of questions. \\ \\
 \textbf{Implementation}: This MapReduce job functions as 1a WordCount does, except it does not count the words and it looks through the titles instead of the bodies. \\ \\
-\textbf{Notes/Reflection}: Here again the choices made building the cleanBody function affects the output.
+\textbf{Notes/Reflection}: Here again the choices made building the cleanBody function affects the output, see "althalus".
 \lstinputlisting[firstline=500, lastline=510, title=1b\_output]{Code_output/output1b.txt}
 
 \subsection{\emph{MoreThan10}}
@@ -277,14 +277,14 @@ The reducer receives the mapper outputs and sums them up. \\ \\
 
 \subsection{\emph{Countries}}
 \textbf{Assumption}: Write a MapReduce job to count the amount of users attributed to a country by the Location attribute in \textit{Users.xml}. The result should be a list of different countries and corresponding users. \\ \\
-\textbf{Implementation}: This mapper functions similarly to 1f tags, except instead of cleaning the tags, it uses "|" as a separator since spaces are part of the location. If Location is separated by a \',\' the last part is treated as the country. \\ \\
-\textbf{Notes/Reflection}: Because by our judgment locations are typed in by users, we have elected to separate the country out of Location very simply by using \',\' as a separator. Anything after the last \',\' is treated as a country. A location with no \',\' is treated as a country. Locations like "California, USA", "California, United States", and "US" will be interpreted as "usa", "united states", and "us", respectively.
-\lstinputlisting[firstline=1,lastline=10,title=2g\_output]{Code_output/output2g.txt}
+\textbf{Implementation}: This mapper functions similarly to 1f tags, except instead of cleaning the tags, it uses "|" as a separator since spaces are part of the location. If Location is separated by a ',' the last part is treated as the country. \\ \\
+\textbf{Notes/Reflection}: Because by our judgement locations are typed in by users, we have elected to separate the country out of Location very simply by using ',' as a separator. Anything after the last ',' is treated as a country. A location with no ',' is treated as a country. Locations like "California, USA", "California, United States", and "US" will be interpreted as "usa", "united states", and "us", respectively.
+\lstinputlisting[firstline=101,lastline=110,title=2g\_output]{Code_output/output2g.txt}
 
 \subsection{\emph{Names}}
 \textbf{Assumption}: Write a pig script or MapReduce job to find the 10 most popular names in \textit{Users.xml}. The result should be a list of top 10 common names. \\ \\
 \textbf{Implementation}: This mapper functions similarly to 2g Countries, except it extracts the DisplayName-attribute in place of the Location-attribute. The reducer functions similarly to 2d Top questions, except it parses differently and has different text formatting for the output due to the decrease from 3 to 2 arguments \\ \\
-\textbf{Notes/Reflection}: Here the most common name is User. This is due to our choice of removing numbers in cleanBody, combining User1, User2, User3, etc. The task suggested explicitly that we should split up names by spaces, perhaps wanting to separate out last names from first names. Due to the nature of Displaynames usually not being full legal names, we have elected to interpret a "name" as the full name given in DisplayName.
+\textbf{Notes/Reflection}: Here the most common name is User. This is likely due to our choice of removing numbers in cleanBody, combining User1, User2, User3, etc. The task suggested explicitly that we should split up names by spaces, perhaps wanting to separate out last names from first names. Due to the nature of Displaynames usually not being full legal names, we have elected to interpret a "name" as the full name given in DisplayName.
 \lstinputlisting[firstline=1,lastline=21,title=2h\_output]{Code_output/output2h.txt}
 
 
@@ -312,7 +312,7 @@ The reducer receives the mapper outputs and sums them up. \\ \\
 \textbf{Assumption}: Perform the same task as in 1a WordCount, except add a combiner before the mapper sends information to the reducer. The result should be the same as in 1a WordCount, but the volume of the data transfer should be smaller. \\ \\
 \textbf{Implementation} The MapReduce function is the same as in 1a WordCount, with a combiner ahead of the print function in the mapper. \\ \\
 \textbf{Notes/Reflection}: Having a combiner in a MapReduce job saves bandwidth and computational strain by decreasing the volume of data sent from the mapper, as shown in \ref{fig:figure_label}.
-\lstinputlisting[firstline=1,lastline=10,title=3c\_output]{Code_output/output3c.txt}
+\lstinputlisting[firstline=101,lastline=110,title=3c\_output]{Code_output/output3c.txt}
 
 \begin{figure}[H]
 \centering
