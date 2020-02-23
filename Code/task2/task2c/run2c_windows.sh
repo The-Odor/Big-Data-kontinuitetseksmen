@@ -4,7 +4,7 @@
 
 #Simplify task change further
 taskNumber=2c
-taskName=TopMiners
+taskName=TopUsers
 sourceFile=Users
 
 #Simplify task change
